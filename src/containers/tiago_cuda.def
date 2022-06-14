@@ -1,0 +1,63 @@
+Bootstrap: docker
+From: ros:melodic
+
+%files
+requirements.txt /requirements.txt
+
+%post
+apt-get update 
+apt install vim python-rosinstall-generator ros-melodic-ros-numpy python-pip software-properties-common git python-rosinstall ros-melodic-desktop-full python-catkin-tools ros-melodic-joint-state-controller ros-melodic-twist-mux ros-melodic-ompl ros-melodic-controller-manager ros-melodic-moveit-core ros-melodic-moveit-ros-perception ros-melodic-moveit-ros-move-group ros-melodic-moveit-kinematics ros-melodic-moveit-ros-planning-interface ros-melodic-moveit-simple-controller-manager ros-melodic-moveit-planners-ompl ros-melodic-joy ros-melodic-joy-teleop ros-melodic-teleop-tools ros-melodic-control-toolbox ros-melodic-sound-play ros-melodic-navigation ros-melodic-depthimage-to-laserscan ros-melodic-moveit-commander ros-melodic-smach ros-melodic-smach-ros ros-melodic-executive-smach ros-melodic-smach-viewer python3-pip python3-pip wget -y
+apt install portaudio19-dev python-pyaudio python3-pyaudio festival -y
+
+pip3 install --upgrade pip
+pip3 install -r ./requirements.txt
+
+# install pytorch version 1.9.0
+wget https://download.pytorch.org/whl/cu111/torch-1.9.0%2Bcu111-cp36-cp36m-linux_x86_64.whl
+pip3 install /torch-1.9.0+cu111-cp36-cp36m-linux_x86_64.whl
+
+# install cuda and cudnn
+wget https://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/cuda_11.2.0_460.27.04_linux.run
+chmod +x cuda_11.2.0_460.27.04_linux.run
+sh cuda_11.2.0_460.27.04_linux.run --silent --toolkit
+
+OS=ubuntu1804
+wget https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/cuda-${OS}.pin 
+mv cuda-${OS}.pin /etc/apt/preferences.d/cuda-repository-pin-600
+apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/7fa2af80.pub
+add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/${OS}/x86_64/ /"
+apt-get update
+
+cudnn_version=8.1.0.77
+cuda_version=cuda11.2
+apt-get install libcudnn8=${cudnn_version}-1+${cuda_version}
+apt-get install libcudnn8-dev=${cudnn_version}-1+${cuda_version}
+
+
+. /opt/ros/melodic/setup.sh
+
+mkdir /opt/tiago_public_ws
+cd /opt/tiago_public_ws
+wget https://raw.githubusercontent.com/pal-robotics/tiago_tutorials/kinetic-devel/tiago_public-melodic.rosinstall
+rosinstall src /opt/ros/melodic tiago_public-melodic.rosinstall
+
+#rosdep init
+rosdep update
+
+rosdep install --from-paths src --ignore-src -y --rosdistro melodic --skip-keys="opencv2 opencv2-nonfree pal_laser_filters speed_limit_node sensor_to_cloud hokuyo_node libdw-dev python-graphitesend-pip python-statsd pal_filters pal_vo_server pal_usb_utils pal_pcl pal_pcl_points_throttle_and_filter pal_karto pal_local_joint_control camera_calibration_files pal_startup_msgs pal-orbbec-openni2 dummy_actuators_manager pal_local_planner gravity_compensation_controller current_limit_controller dynamic_footprint dynamixel_cpp tf_lookup opencv3 joint_impedance_trajectory_controller cartesian_impedance_controller omni_base_description omni_drive_controller"
+catkin build -DCATKIN_ENABLE_TESTING=0 -j $(expr `nproc` / 2)
+
+ln -s /bin/bash /usr/bin/bash
+
+echo "source /opt/ros/melodic/setup.bash" >> /opt/env.sh
+echo "source /opt/tiago_public_ws/devel/setup.bash" >> /opt/env.sh
+echo "export SHELL='/bin/bash'" >> /opt/env.sh
+echo "echo 'I am in Singularity!'" >> /opt/env.sh
+
+%environment
+CUDA_VER='cuda-11.2'
+LD_LIBRARY_PATH=/usr/local/${CUDA_VER}/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+PATH=/usr/local/${CUDA_VER}/bin${PATH:+:${PATH}}
+
+%runscript
+    exec bash --init-file /opt/env.sh
