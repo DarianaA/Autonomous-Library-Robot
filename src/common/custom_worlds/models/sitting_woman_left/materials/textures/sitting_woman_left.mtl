@@ -1,0 +1,13 @@
+# Blender MTL File: 'sitting_woman.blend'
+# Material Count: 1
+
+newmtl rp_carla_rigged_001_mat
+Ns 18.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 2.000000 2.000000 2.000000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd rp_carla_rigged_001_dif.jpg

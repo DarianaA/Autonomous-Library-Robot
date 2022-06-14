@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name='books_01_got_book'>
+    <link name='body'>
+      <inertial>
+        <mass>0.411</mass>
+        <pose>-0.0148535577968 -0.0142050544666 0.10220486839 0 0 0</pose>
+        <inertia>
+          <ixx>0.0023954891543</ixx>
+          <ixy>-4.99469572044e-07</ixy>
+          <ixz>1.52866735549e-05</ixz>
+          <iyy>0.00168217166772</iyy>
+          <iyz>5.45359647538e-06</iyz>
+          <izz>0.000999504278105</izz>
+        </inertia>
+      </inertial>
+      <visual name='books_01_got_book_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://books_01_got_book/meshes/textured.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='books_01_got_bookk_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://books_01_got_book/meshes/nontextured.stl</uri>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+      </collision>
+    </link>
+  </model>
+</sdf>

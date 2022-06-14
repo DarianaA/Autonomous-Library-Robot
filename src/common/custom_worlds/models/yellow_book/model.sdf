@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='yellow_book'>
+    <link name='body'>
+       <inertial>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.166667</izz>
+        </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+      </inertial>
+ 
+      <visual name='yellow_book_visual'>
+	<pose>0 0 0 0 0 0</pose>        
+	<geometry>
+          <box>
+            <size>0.03 0.12 0.2</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Yellow</name>
+          </script>
+        </material>
+      </visual>
+      <collision name='yellow_book_collision'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03 0.12 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
