@@ -1,0 +1,6 @@
+sensor_msgs/PointCloud2 points
+std_msgs/String axis
+float32 lower
+float32 upper
+---
+sensor_msgs/PointCloud2 points

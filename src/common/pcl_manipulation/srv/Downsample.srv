@@ -1,0 +1,6 @@
+sensor_msgs/PointCloud2 points
+float32 leaf_size_x
+float32 leaf_size_y
+float32 leaf_size_z
+---
+sensor_msgs/PointCloud2 points

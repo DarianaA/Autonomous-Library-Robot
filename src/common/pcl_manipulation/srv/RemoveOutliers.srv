@@ -1,0 +1,6 @@
+sensor_msgs/PointCloud2 points
+int32 neighbours
+float32 stddev
+int32 iterations
+---
+sensor_msgs/PointCloud2 points

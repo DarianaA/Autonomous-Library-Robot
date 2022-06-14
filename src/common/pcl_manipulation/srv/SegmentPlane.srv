@@ -1,0 +1,4 @@
+sensor_msgs/PointCloud2 points
+float32 distance_threshold
+---
+sensor_msgs/PointCloud2 points
