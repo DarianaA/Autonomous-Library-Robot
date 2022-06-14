@@ -1,0 +1,8 @@
+results/*
+checkpoints/*
+testing_data/*
+src/contact_graspnet/results/*
+src/contact_graspnet/test_data/*
+src/contact_graspnet/__pycache__*
+*.so
+*.cu.o
